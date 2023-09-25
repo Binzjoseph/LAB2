@@ -12,6 +12,15 @@ self-contained: true
 
 Load packages and data:
 
+```{r}
+library(magrittr)     # the pipe
+library(tidyverse)    # for data wrangling + visualization
+library(tidymodels)   # for modeling
+library(gt)           # for making display tables
+library(gtExtras)     # helper functions for beautiful tables
+library(DataExplorer) #
+```
+
 ```{r load-pkg-data}
 #| message: false
 the_tate <- readr::read_delim("data/the-tate-collection.csv", ";", escape_double = FALSE, trim_ws = TRUE)
@@ -22,9 +31,36 @@ the_tate_artists <- readr::read_csv("data/the-tate-artists.csv")
 
 ### Exercise 1
 
-The `the_tate` dataset has \_\_\_ unique artists who worked from \_\_\_ to \_\_\_. The works were acquired between the years \_\_\_ and \_\_\_.
+```{r}
+library(dplyr)
+glimpse(the_tate_artists)
+```
+
+```{r}
+the_tate |>
+dplyr::summarise(unique=length(unique(artistId)),
+                 min_year= min(year,na.rm = TRUE), max_year=max(year,na.rm = TRUE),
+                 min_acquisittion= min(acquisitionYear,na.rm = TRUE), max_acqueisiton=max(acquisitionYear,na.rm=TRUE))
+```
+
+The `the_tate` dataset has 3342 unique artists who worked from 1545 to 2012. The works were acquired between the years 1823 and 2013.
 
 ### Exercise 2
+
+```{r}
+library(dplyr)
+library(tidyverse)
+missing_dates<-table(the_tate$artist, is.na(the_tate$year))
+missing_dates
+
+
+```
+
+```{r}
+library(dplyr)
+library(tidyverse)
+missing_dates
+```
 
 How number of works with missing dates is \_\_.
 
